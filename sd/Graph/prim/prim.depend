@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1044390439 source:f:\graph\prim\main.cpp
+	<iostream>
+	<fstream>
+

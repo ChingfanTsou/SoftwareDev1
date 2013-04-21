@@ -1,0 +1,56 @@
+#include <iostream>
+#include <fstream>
+
+int n,m;
+int fa[MAXN];
+int dis[MAXN];
+int tot;
+
+struct Node
+{
+    int v;
+    int e;
+    Node* next;
+}*graph[MAXN];
+
+void newedge(int a, int b, int c)
+{
+    Node* p = new Node();
+    p -> v = b;
+    p -> e = c;
+    p -> next = graph[a];
+    graph[a] = p;
+}
+
+int find(int a, int b)
+{
+    for (Node* p = graph[a]; p; p = p->next)
+    {
+        if (p->v == b)
+            return p->e;
+    }
+    return 0x7fffffff;
+}
+
+void input()
+{
+    ifstream infile("data.in",ios::in);
+    infile >> n >> m;
+
+    int a,b,c;
+    for (int i=1; i<=m; i++)
+    {
+        infile >> a >> b >> c;
+        newedge(a,b,c);
+        newedge(b,a,c);
+    }
+}
+
+
+int main()
+{
+    input();
+    topsort();
+    output();
+    return 0;
+}

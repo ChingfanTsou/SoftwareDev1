@@ -1,0 +1,90 @@
+#pragma once
+
+template<typename Vp>
+class Heap
+{
+public:
+    Heap()
+        : tot(0)
+    {
+        data = new Vp[256];
+    }
+    Heap(int n)
+        : tot(0)
+    {
+        data = new Vp[n];
+    }
+
+    ~Heap()
+    {
+        delete [] data;
+    }
+
+    Vp getTop()
+    {
+        Vp res = data[1];
+        data[1] = data[tot--];
+        pushDown(1);
+        return res;
+    }
+    
+    void insert(const Vp& other)
+    {
+        data[++tot] = other;
+        popUp(tot);
+    }
+private:
+    void pushDown(int index)
+    {
+        int f,s;
+        Vp tmp;
+        f = index;
+        s = 2*f;
+        if (s+1<=tot && data[s+1]>data[s])
+            ++s;
+
+        while (s<=tot)
+        {
+            if (data[f]<data[s])
+            {
+                tmp = data[f];
+                data[f] = data[s];
+                data[s] = tmp;
+                f = s;
+                s = 2*f;
+                if (s+1<=tot && data[s+1]>data[s])
+                    ++s;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    
+    void popUp(int index)
+    {
+        int s = index;
+        int f = s >> 1;
+        Vp tmp;
+        
+        while (f >= 1)
+        {
+            if (data[f]<data[s])
+            {
+                tmp = data[f];
+                data[f] = data[s];
+                data[s] = tmp;
+                s = f;
+                f = s >> 1;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    Vp* data;
+    int tot;
+};

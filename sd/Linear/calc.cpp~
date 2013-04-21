@@ -1,0 +1,145 @@
+#include <iostream>
+#include <string>
+#include "ListStack.hpp"
+#include "OpNumChar.h"
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+void convert(const string* infix, ListStack<OpNumChar>* result)
+{
+    ListStack<OpNumChar>* opert = new ListStack<OpNumChar>();
+    
+    for (string::const_iterator ptr = infix -> begin(); ptr != infix -> end();)
+    {
+        char ch = *ptr;
+        OpNumChar* nodePtr = new OpNumChar(*infix, ptr);
+        if (nodePtr -> isOpt())
+        {
+            if (opert -> isEmpty())
+            {
+                opert -> push(*nodePtr);
+                
+                cout << "stack within operators" << endl << *opert << endl;
+            }
+            else
+            {
+                /*
+                 * if node is ')',keep poping the top operator from the opert stack
+                 * and push it into the result stack until the top operator is '('
+                 */
+                if (nodePtr -> getOpt() == ')')
+                {
+                    while (!opert -> isEmpty() && (opert -> getTop().getOpt()) != '(')
+                    {
+                        result -> push(opert -> pop());
+                        cout << "stack within operators:" << endl << *opert << endl;
+                        cout << "stack within postfix expression" << endl << *result << endl;
+                    }
+                    if (!opert -> isEmpty())
+                    {
+                        opert -> pop();
+                        cout << "stack within operators" << endl << *opert << endl;
+                    }
+                }
+                /*
+                 * if node is other operator,push it into the opert stack if it is
+                 * priorer than the top operator in the opert stack,keep poping from the opert
+                 * stack and pushing into the result stack until the requirment is fullfilled
+                 * otherwise.
+                 */
+                else
+                {
+                    if (nodePtr -> higherThan(opert -> getTop()))
+                    {
+                        opert -> push(*nodePtr);
+                        cout << "stack within operators" << endl << *opert << endl;
+                    }
+                    else
+                    {
+                        while (!opert -> isEmpty() && opert -> getTop().getOpt() != '(' && !nodePtr -> higherThan(opert -> getTop()))
+                        {
+                            result -> push(opert -> pop());
+                            cout << "stack within operators" << endl << *opert << endl;
+                            cout << "stack within postfix expression" << endl <<*result << endl;
+                        }
+                        opert -> push(*nodePtr);
+                        cout << "stack within operators" << endl << *opert << endl;
+                    }
+                }
+            }
+        }
+        else
+        {
+            result -> push(*nodePtr);
+            cout << "stack within postfix expression" << endl << *result << endl;
+        }
+    }
+    
+    while (!opert -> isEmpty())
+    {
+        result -> push(opert -> pop());
+        cout << "stack within operators" << endl << *opert << endl;
+        cout << "stack within postfix expression" << endl << *result << endl;
+    }
+
+    delete opert;
+}
+
+void eval(ListStack<OpNumChar>* result)
+{
+    ListStack<OpNumChar>* ptfxExp = new ListStack<OpNumChar>();
+    while (!result -> isEmpty())
+    {
+        ptfxExp -> push(result -> pop()); 
+    }
+
+    cout << endl << "postfix expression" << endl << *ptfxExp << endl << endl;
+    while (!ptfxExp -> isEmpty())
+    {
+        /*
+         * if the top element is an operator,then evaluate
+         */
+        if (ptfxExp -> getTop().isOpt())
+        {
+            OpNumChar* a = new OpNumChar(result -> pop());
+            cout << "stack within numbers" << endl << *result << endl;
+            a -> calc(ptfxExp -> pop(), result -> pop());
+            cout << "stack within postfix expression" << endl << *ptfxExp << endl;
+            cout << "stack within numbers" << endl << *result << endl;
+            result -> push(*a);
+            cout << "stack within numbers" << endl << *result << endl;
+        }
+        /*
+         * if the top element is a number,just push it into the result stack
+         */
+        else
+        {
+            result -> push(ptfxExp -> pop());
+            cout << "stack within postfix expression" << endl << *ptfxExp << endl;
+            cout << "stack within numbers" << endl << *result << endl;
+        }
+    }
+
+    cout << result -> pop().getData() << endl;
+
+    delete ptfxExp;
+}
+
+int main()
+{
+    string* infixExp = new string();
+    
+    cout << "Please input an infix expression: ";
+    getline(cin, *infixExp);
+
+    ListStack<OpNumChar>* result = new ListStack<OpNumChar>();
+    convert(infixExp, result); //convert the infix expression into postfix expression
+    cout << "procedure of evaluation" << endl;
+    eval(result); //evaluate the postfix expression
+
+    delete result;
+    
+    return 0;
+}

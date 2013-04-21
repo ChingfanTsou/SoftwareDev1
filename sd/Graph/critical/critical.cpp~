@@ -1,0 +1,88 @@
+#include <iostream>
+#include <fstream>
+#include "QueueList.hpp"
+
+using namespace std;
+
+const int MAXN=10000;
+
+int n,m;
+int fa[MAXN];
+int dis[MAXN];
+int ind[MAXN];
+int oud[MAXN];
+int ve[MAXN],vl[MAXN];
+int tot;
+
+struct Node
+{
+    int v;    
+    int e;
+    int ee,el;
+    Node* next;
+}*posgraph[MAXN],*vergraph[MAXN];
+
+void newedge(**Node graph, int a, int b)
+{
+    Node* p = new Node();
+    p -> v = b;
+    p -> e = c;
+    p -> next = graph[a];
+    graph[a] = p;
+}
+
+void input()
+{
+    ifstream infile("data.in",ios::in);
+    infile >> n >> m;
+
+    int a,b;
+    for (int i=1; i<=m; i++)
+    {
+        infile >> a >> b >> c;
+        newedge(posgraph, a,b,c);
+        ++ind[b];
+        newedge(vergraph, b,a,c);
+        ++oud[a];
+    }
+}
+
+void outputv(string x, int a, int b)
+{
+    cout << "The " << x << " beginning time of event " << a << " is " << b << endl;
+}
+
+void outpute(string x, int a, int b, int c)
+{
+    cout << "The " << x << " beginning time of activity " << a << " -> " << b << " is " << c << endl;
+}
+
+void topsortel()
+{
+    QueueList<int> queue;
+    queue.enQueue(1);
+    outputv("earliest", 1, 0);
+    
+    while (!queue.isEmpty())
+    {
+        x = queue.deQueue();
+        for (Node* p=posgraph[x]; p; p = p->next)
+        {
+            --ind[p->v];
+            if (ve[x]+p->e>ve[p->v])
+                ve[p->v]=ve[x]+p;
+            if (!ind[p->v])
+            {
+                queue.enQueue(p->v);
+                outputv("earliest", p->v, ve[p->v]);
+            }
+        }
+    }
+}
+
+int main()
+{
+    input();
+    topsort();
+    return 0;
+}

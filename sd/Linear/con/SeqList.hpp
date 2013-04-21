@@ -1,0 +1,173 @@
+#ifndef SEQLIST_H
+#define SEQLIST_H
+
+template <typename EleType>
+class SeqList
+{
+public:
+    class Node
+    {
+    public:
+        Node();
+        ~Node();
+        Node(const EleType&);
+        EleType data;
+        Node* next;
+    };
+    SeqList();
+    virtual ~SeqList();
+    void insert(const EleType&, Node*);
+    Node* findByVal(const EleType&) const;
+    EleType findByPos(const Node*) const;
+    void delByPos(Node*);
+    Node* prePos(const Node*) const;
+    Node* nextPos(const Node*) const;
+    void clear();
+    Node* first() const;
+    Node* last() const;
+    Node* llast() const;
+private:
+    Node* head;
+};
+
+template <typename EleType>
+SeqList<EleType>::Node::Node()
+{
+}
+
+template <typename EleType>
+SeqList<EleType>::Node::~Node()
+{
+}
+
+template <typename EleType>
+SeqList<EleType>::Node::Node(const EleType& nwEle)
+    :data(nwEle)
+{
+}
+
+template <typename EleType>
+SeqList<EleType>::SeqList()
+    :head(0)
+{
+}
+
+template <typename EleType>
+SeqList<EleType>::~SeqList()
+{
+    while (head)
+    {
+        delByPos(head);
+    }
+}
+
+template <typename EleType>
+void SeqList<EleType>::insert(const EleType& nwEle, Node* pos)
+{
+    Node* q = new Node(nwEle);
+    if (pos == 0)
+    {
+        q -> next = head;
+        head = q;
+        return;
+    }
+    q -> next = pos -> next;
+    pos -> next = q;
+}
+
+template <typename EleType>
+typename SeqList<EleType>::Node* SeqList<EleType>::findByVal(const EleType& mEle) const
+{
+    for (SeqList<EleType>::Node* p = head; p; p = p -> next)
+    {
+        if (p -> data == mEle)
+        {
+            return p;
+        }
+    }
+    return 0;
+}
+
+template <typename EleType>
+EleType SeqList<EleType>::findByPos(const Node* pos) const
+{
+    if (pos == 0)
+    {
+        return head -> data;
+    }
+    return pos -> next -> data;
+}
+
+template <typename EleType>
+void SeqList<EleType>::delByPos(Node* pos)
+{
+    Node* p;
+    if (pos -> next == 0)
+    {
+        p = head -> next;
+        delete head;
+        head = p;
+    }
+    else if (pos -> next)
+    {
+        p = pos -> next;
+        pos -> next = p -> next;
+        delete p;
+    }
+}
+
+template <typename EleType>
+typename SeqList<EleType>::Node* SeqList<EleType>::prePos(const Node* pos) const
+{
+    for (Node* p = head; p; p = p -> next)
+    {
+        if (p -> next == pos)
+        {
+            return p;
+        }
+    }
+    return head;
+}
+
+template <typename EleType>
+typename SeqList<EleType>::Node* SeqList<EleType>::nextPos(const Node* pos) const
+{
+    return pos -> next;
+}
+
+template <typename EleType>
+void SeqList<EleType>::clear()
+{
+    while (head)
+    {
+        delByPos(head);
+    }
+}
+
+template <typename EleType>
+typename SeqList<EleType>::Node* SeqList<EleType>::first() const
+{
+    return head;
+}
+
+template <typename EleType>
+typename SeqList<EleType>::Node* SeqList<EleType>::last() const
+{
+    for (Node* p = head; p; p = p -> next)
+    {
+        if (p -> next == 0)
+        {
+            return p;
+        }
+    }
+    return 0;
+}
+
+template <typename EleType>
+typename SeqList<EleType>::Node* SeqList<EleType>::llast() const
+{
+    return 0;
+}
+
+
+#endif /* SEQLIST_H */

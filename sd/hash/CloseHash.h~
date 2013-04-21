@@ -1,0 +1,15 @@
+#ifndef OPENHASH_H
+#define OPENHASH_H
+
+template<typename Vp, typename Hf>
+class OpenHash
+{
+public:
+    OpenHash() {}
+    ~OpenHash() {}
+
+private:
+    Vp 
+}
+
+#endif /* OPENHASH_H */

@@ -1,0 +1,79 @@
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
+#include "con/SeqList.hpp"
+
+using std::ifstream;
+using std::ofstream;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::flush;
+
+struct rateitem
+{
+    rateitem(int a, double b) :year(a),rate(b) {}
+    bool operator==(const rateitem& a)
+        {
+            return (this->year == a.year);
+        }
+    int year;
+    double rate;
+};
+
+int main()
+{
+    ifstream infile("ratetable.txt");
+    ofstream outfile("ratetable.txt");
+    SeqList<rateitem> r_table;
+    int y;
+    double r;
+
+    while (infile.eof())
+    {
+        infile >> y >> r;
+        r_table.insert(rateitem(y,r), r_table.last());
+    }
+
+    int ch;
+    cout << "1.insert\n2.delete\n3.check\n4.print\n5.exit\n" << endl;
+    while (!cin.eof())
+    {
+        cin >> ch;
+        switch (ch)
+        {
+        case 1:
+            cout << "please input the time and the rate: " << flush;
+            cin >> y >> r;
+            r_table.insert(rateitem(y,r), r_table.last());
+            break;
+        case 2:
+            cout << "please input the time: " << flush;
+            cin >> y;
+            r_table.delByPos(r_table.findByVal(rateitem(y,0)));
+            break;
+        case 3:
+            cout << "please input the time: " << flush;
+            cin >> y;
+            cout << r_table.findByVal(rateitem(y,0));
+        case 4:
+            for (const SeqList<rateitem>::Node* p = r_table.first(); p != r_table.llast(); p = p -> next)
+            {
+                cout << p -> data.year << " " << p -> data.rate << endl;
+            }
+            break;
+        case 5:
+            for (const SeqList<rateitem>::Node* p = r_table.first(); p != r_table.llast(); p = p -> next)
+            {
+                outfile << p -> data.year << " " << p -> data.rate << endl;
+            }
+            exit(0);
+        }
+        cout << "1.insert\n2.delete\n3.check\n4.print\n5.exit\n" << endl;
+    }
+    
+    infile.close();
+    outfile.close();
+
+    return 0;
+}

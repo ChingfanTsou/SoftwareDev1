@@ -1,0 +1,126 @@
+#ifndef LISTSTACK_H
+#define LISTSTACK_H
+
+#include <iostream>
+using std::ostream;
+
+template <class EleType> class ListStack;
+template <class EleType> ostream& operator<<(ostream&, const ListStack<EleType>&);
+
+template <class EleType>
+class ListStack
+{
+    friend ostream& operator<< <>(ostream&, const ListStack<EleType>&);
+public:
+    ListStack();
+    ~ListStack();
+    bool isEmpty();
+    volatile void push(const EleType&); //push an element into the stack
+    EleType pop(); //pop an element
+    EleType getTop(); //return the top element
+
+private:
+    class StackNode
+    {
+    public:
+        StackNode();
+        ~StackNode();
+        StackNode(const EleType&);
+        EleType data;
+        StackNode* next;
+    };
+
+    StackNode* head;
+    StackNode* top;
+};
+
+template <class EleType>
+ListStack<EleType>::StackNode::StackNode(const EleType& newEle)
+    : data(newEle)
+{
+}
+
+template <class EleType>
+ListStack<EleType>::StackNode::~StackNode()
+{
+}
+
+template <class EleType>
+ListStack<EleType>::StackNode::StackNode()
+{
+}
+
+template <class EleType>
+ListStack<EleType>::ListStack()
+{
+    head = new StackNode();
+    head -> next = 0;
+    top = 0;
+}
+
+template <class EleType>
+ListStack<EleType>::~ListStack()
+{
+    while (!isEmpty())
+    {
+        pop();
+    }
+    delete head;
+}
+
+template <class EleType>
+bool ListStack<EleType>::isEmpty()
+{
+    if (!(head -> next))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+template <class EleType>
+EleType ListStack<EleType>::pop()
+{
+    if (isEmpty())
+    {
+        return head -> data;
+    }
+    else
+    {
+        head -> next = top -> next;
+        EleType retD = top -> data;
+        delete top;
+        top = head -> next;
+        return retD;
+    }
+}
+
+template <class EleType>
+volatile void ListStack<EleType>::push(const EleType& newEle)
+{
+    top = new StackNode(newEle);
+    top -> next = head -> next;
+    head -> next = top;
+}
+
+template <class EleType>
+EleType ListStack<EleType>::getTop()
+{
+    return top -> data;
+}
+
+template <class EleType>
+ostream& operator<<(ostream &out, const ListStack<EleType>& st)
+{
+    out << "top ";
+    for (const typename ListStack<EleType>::StackNode* p = st.top; p != 0; p = p -> next)
+    {
+        out << (p -> data) << " ";
+    }
+    return out;
+}
+
+#endif /* LISTSTACK_H*/
