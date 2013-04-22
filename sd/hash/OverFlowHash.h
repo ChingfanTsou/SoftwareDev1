@@ -1,10 +1,11 @@
 #ifndef OVERFLOWHASH_H
 #define OVERFLOWHASH_H
 
+template <typename Hf, int mod>
 class OverFlowHash
 {
     OverFlowHash(int cap)
-        :maxvol(cap),tot(-1)
+        :maxvol(cap),tot(-1),hash(mod)
     {
         hash_table = new int[cap];
         of_table = new int[cap];
@@ -22,7 +23,7 @@ class OverFlowHash
     
     void insert(int newkey)
     {
-        pos = search(newkey);
+        int pos = search(newkey);
         
         
         if (pos == -1)
@@ -42,12 +43,9 @@ class OverFlowHash
     int* search(int key)
     {
         int pos;
-        for (int i = 0; i < maxvol; ++i)
-        {
-            pos = hash(key, i);
-            if (hash_table[pos] == -1 || hash_table[pos] == key)
-                return hash_table + pos;
-        }
+        pos = hash(key, 0);
+        if (hash_table[pos] == -1 || hash_table[pos] == key)
+            return hash_table + pos;
         return -1;
     }
 private:
@@ -56,6 +54,6 @@ private:
     int maxvol;
     int *hash_table;
     int *of_table;
-}
+};
 
 #endif /* OVERFLOWHASH_H */

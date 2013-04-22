@@ -4,7 +4,7 @@
 #include <stdexcept>
 using std::runtime_error;
 
-calss DuplicateExp : public runtime_error
+class DuplicateExp : public runtime_error
 {
 public:
     DuplicateExp()
