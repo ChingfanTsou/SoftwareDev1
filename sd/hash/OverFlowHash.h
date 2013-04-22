@@ -4,6 +4,7 @@
 template <typename Hf, int mod>
 class OverFlowHash
 {
+public:
     OverFlowHash(int cap)
         :maxvol(cap),tot(-1),hash(mod)
     {
@@ -11,7 +12,7 @@ class OverFlowHash
         of_table = new int[cap];
         for (int i = 0; i < cap; ++i)
         {
-            hash_table = -1;
+            hash_table[i] = -1;
         }
     }
 
@@ -23,34 +24,52 @@ class OverFlowHash
     
     void insert(int newkey)
     {
-        int pos = search(newkey);
+        int* pos = search(newkey);
         
         
-        if (pos == -1)
+        if (pos == of_table+tot+1)
         {
-            if (tot = maxvol - 1)
+            if (tot == maxvol - 1)
                 throw TableFull();
 
             of_table[++tot] = newkey;
         }
         
-        if (hash_table[pos] == newkey)
-            throw DuplicateExp();
+        //if (*pos == newkey)
+            //throw DuplicateExp();
 
-        hash_table[pos] = newkey;
+        *pos = newkey;
     }
     
     int* search(int key)
     {
         int pos;
+        q_t = 1;
         pos = hash(key, 0);
         if (hash_table[pos] == -1 || hash_table[pos] == key)
             return hash_table + pos;
-        return -1;
+        else
+        {
+            for (int i=0;i<=tot;i++)
+            {
+                ++q_t;
+                if (of_table[pos]==key)
+                {
+                    return of_table+pos;
+                }
+            }
+        }
+        return of_table+tot+1;
+    }
+
+    int get_q_time()
+    {
+        return q_t;
     }
 private:
     Hf hash;
     int tot;
+    int q_t;
     int maxvol;
     int *hash_table;
     int *of_table;

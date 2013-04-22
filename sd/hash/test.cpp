@@ -79,7 +79,32 @@ int main()
         cout << "Alpha = "<< double(mod)/(m*i) << " ASL = " << double(tot[i])/mod << endl;
     }
 
+        delete close_table3;
+        delete close_table4;
+        delete close_table1;
+        delete close_table2;
     /*--------------------------------------*/
-    
+
+        int base = 10000;
+        for (int j = 1; j <= 10; ++j)
+        {
+            OverFlowHash<KMod, mod>* of_table = new OverFlowHash<KMod, mod>(m);
+            for (int i = 1; i <= base; ++i)
+            {
+                of_table -> insert(ran[i]);
+            }
+
+            tot1=0;
+            for (int i = 1; i <= base; ++i)
+            {
+                of_table -> search(ran[i]);
+                tot1 += of_table->get_q_time();
+            }
+
+            cout << "n = " << base <<" ASL = " << double(tot1)/base << endl;
+            base += 10000;
+            delete of_table;
+        }
+        
     return 0;
 }
