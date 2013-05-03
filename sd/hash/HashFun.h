@@ -46,7 +46,38 @@ private:
     int Increment(int i)
     {
         return i;
-    }    
+    }
+    int m;
+};
+
+class Fold
+{
+public:
+    Fold(int cap)
+        :m(cap)
+    {
+    }
+
+    int operator() (int k, int i)
+    {
+        return (hash(k)+Increment(i));
+    }
+
+private:
+    int hash(int k)
+    {
+        int sum = 0;
+        while (k)
+        {
+            sum += k % 10;
+            k /= 10;
+        }
+        return rand() % m;
+    }
+    int Increment(int i)
+    {
+        return i;
+    }
     int m;
 };
 
