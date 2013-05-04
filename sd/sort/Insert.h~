@@ -1,0 +1,15 @@
+#ifndef _INSERT_H_
+#define _INSERT_H_
+
+class Insert
+{
+public:
+    Insert();
+    virtual ~Insert();
+    void operator()(vector<int>& array)
+        {
+            
+        }
+};
+
+#endif /* _INSERT_H_ */

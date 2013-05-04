@@ -1,0 +1,13 @@
+#ifndef _SELECT_H_
+#define _SELECT_H_
+
+class Select
+{
+public:
+    Select();
+    virtual ~Select();
+    void operator()(vector<int>& )
+
+};
+
+#endif /* _SELECT_H_ */

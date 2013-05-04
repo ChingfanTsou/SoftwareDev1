@@ -1,0 +1,11 @@
+#ifndef _RADIX_H_
+#define _RADIX_H_
+
+class Radix
+{
+public:
+    Radix();
+    virtual ~Radix();
+};
+
+#endif /* _RADIX_H_ */

@@ -1,0 +1,16 @@
+#ifndef _HEAP_H_
+#define _HEAP_H_
+
+#include <vector>
+class Heap
+{
+public:
+    Heap();
+    virtual ~Heap();
+    void operator()(vector<int>& array)
+        {
+            
+        }
+};
+
+#endif /* _HEAP_H_ */

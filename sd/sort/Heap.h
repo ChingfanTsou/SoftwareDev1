@@ -1,0 +1,44 @@
+#ifndef _HEAP_H_
+#define _HEAP_H_
+
+#include <vector>
+class Heap
+{
+public:
+    Heap() {};
+    virtual ~Heap() {};
+    void operator()(vector<int>& array)
+        {
+            for (int i = (array.size()>>1) - 1; i>=0; --i)
+            {
+                pushdown(array, i, array.size());
+            }
+            for (int i = array.size() - 1; i >= 0; --i)
+            {
+                int k = array[0];
+                array[0] = array[i];
+                array[i] = k;
+                pushdown(array, 0, i);
+            }
+        }
+    void pushdown(vector<int>& array, int x, int n)
+        {
+            int j = 2*x+1;
+            int k;
+            while (j < n)
+            {
+                if (array[x]<array[j] || j+1< n && array[x]<array[j+1])
+                {
+                    if (array[j] < array[j+1])
+                        ++j;
+                    k = array[x];
+                    array[x] = array[j];
+                    array[j] = k;
+                }
+                x = j;
+                j = 2*x+1;
+            }
+        }
+};
+
+#endif /* _HEAP_H_ */

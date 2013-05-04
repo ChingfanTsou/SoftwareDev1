@@ -1,0 +1,11 @@
+#ifndef _SHELL_H_
+#define _SHELL_H_
+
+class Shell
+{
+public:
+    Shell();
+    virtual ~Shell();
+};
+
+#endif /* _SHELL_H_ */

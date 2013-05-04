@@ -1,0 +1,23 @@
+#ifndef _QUIT_K_
+#define _QUIT_K_
+
+#include <vector>
+
+class Quik
+{
+public:
+    Quik();
+    virtual ~Quik();
+    void operator()(vector<int>& array)
+        {
+            quik_sort(array, 0, array.size()-1);
+        }
+
+private:
+    void quik_sort(vector<int>& array, int l, int r)
+    {
+        
+    }
+};
+
+#endif /* _QUIT_K_ */
