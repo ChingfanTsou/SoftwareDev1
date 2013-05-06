@@ -5,12 +5,17 @@
 class Merge
 {
 public:
-    Merge() : tmp(1000000){};
+    Merge() : tmp(1000000), chg(0), com(0){};
     virtual ~Merge() {};
     void operator()(vector<int>& array)
         {
+            chg=com=0;
             mergesort(array, 0, array.size()-1);
         }
+    
+    int chg;
+    int com;
+
 private:
     void mergesort(vector<int>& array, int l, int r)
         {
@@ -30,6 +35,7 @@ private:
             int k=0;
             while (i<=m && j<=r)
             {
+                ++com;
                 if (array[i]<=array[j])
                 {
                     tmp[++k] = array[i++];
@@ -40,6 +46,7 @@ private:
             while (i<=m) tmp[++k]=array[i++];
             while (j<=m) tmp[++k]=array[j++];
             
+            chg += k;
             for (int i = 0; i < k; ++i)
             {
                 array[l+i]=tmp[i+1];

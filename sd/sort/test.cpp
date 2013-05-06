@@ -26,6 +26,7 @@ int main()
     
     Merge bs;
     bs(data);
+    
 
     for (int i = 0; i < n; i++)
     {

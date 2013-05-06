@@ -7,14 +7,16 @@
 class Radix
 {
 public:
-    Radix() :bucket(1000000){};
+Radix() :bucket(1000000),chg(0){};
     virtual ~Radix() {};
     void operator()(vector<int>& array)
         {
+            chg = 0;
             for (int pow=10; true; pow*=10)
             {
                 for (int i=0; i < array.size(); i++)
                 {
+                    ++chg;
                     bucket[(array[i]%pow)/(pow / 10)].push(array[i]);
                 }
                 if (bucket[0].size() == array.size())
@@ -33,6 +35,8 @@ public:
                 }
             }
         }
+
+    int chg;
 private:
     vector<queue<int> > bucket;
 };

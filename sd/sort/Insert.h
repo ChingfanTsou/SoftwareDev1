@@ -6,7 +6,7 @@
 class Insert
 {
 public:
-    Insert() {};
+    Insert() :chg(0), com(0){};
     virtual ~Insert() {};
     void operator()(vector<int>& array)
         {
@@ -17,10 +17,15 @@ public:
                 for (; j >= 0 && k <= array[j]; --j)
                 {
                     array[j+1] = array[j];
+                    ++chg;
+                    ++com;
                 }
                 array[j+1]=k;
+                ++chg;
             }
         }
+    int chg;
+    int com;
 };
 
 #endif /* _INSERT_H_ */

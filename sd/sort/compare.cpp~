@@ -1,0 +1,14 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+#include "Bubble.h"
+#include "Heap.h"
+#include "Insert.h"
+#include "Quick.h"
+#include "Shell.h"
+#include "Select.h"
+#include "Radix.h"
+#include "Merge.h"
